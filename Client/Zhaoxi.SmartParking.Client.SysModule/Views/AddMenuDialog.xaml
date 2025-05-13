@@ -1,0 +1,226 @@
+﻿<UserControl x:Class="Zhaoxi.SmartParking.Client.SysModule.Views.AddMenuDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.SysModule.Views"
+             xmlns:converter="clr-namespace:Zhaoxi.SmartParking.Client.SysModule.Converters"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d"  FontFamily="Microsoft YaHei" FontWeight="ExtraLight"
+             d:DesignHeight="450" d:DesignWidth="500">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/BaseResources.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/TextBoxStyle.xaml"/>
+                <ResourceDictionary>
+                    <converter:Int2BoolConverter x:Key="Int2BoolConverter"/>
+
+
+                    <!--*******************************************************************-->
+                    <!--图标选择控件模板-->
+                    <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
+                    <Color x:Key="BorderDarkColor">#FF444444</Color>
+                    <Color x:Key="ControlLightColor">White</Color>
+                    <Color x:Key="ControlMediumColor">#FF7381F9</Color>
+                    <Color x:Key="GlyphColor">#FF444444</Color>
+                    <Color x:Key="BorderMediumColor">#FF888888</Color>
+                    <Style x:Key="FocusVisual">
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle StrokeDashArray="1 2" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" Margin="2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0.0"/>
+                        <GradientStop Color="#FFE5E5E5" Offset="1.0"/>
+                    </LinearGradientBrush>
+
+                    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" CornerRadius="3" BorderThickness="1" Background="White"/>
+                            <Border BorderBrush="#EEE" BorderThickness="1,0,0,0" Grid.Column="1" Margin="0,10"/>
+                            <TextBlock Text="更改" Foreground="#0066CC" Cursor="Hand" Grid.Column="1"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12"
+                                       SnapsToDevicePixels="True">
+                            </TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+
+                    <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
+                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                        <Setter Property="AllowDrop" Value="true"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                        <Setter Property="MinHeight" Value="0"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                    <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
+                        <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                                <Border x:Name="shadow" Background="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                                    <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                                        <ScrollViewer x:Name="DropDownScrollViewer">
+                                            <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                                <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                                    <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                                </Canvas>
+                                                <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Border>
+                            </Popup>
+                            <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource ComboBoxToggleButton}"/>
+                            <ContentPresenter x:Name="ContentSite"
+                                IsHitTestVisible="False"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left">
+                                </ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="true">
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                                <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                                <Setter Property="Background" TargetName="shadow" Value="#71000000"/>
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true"/>
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
+                            <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                                <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                                <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                    <!--*****************************************************************-->
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="Width" Value="500"/>
+            <Setter Property="Height" Value="400"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <Grid Margin="0,20,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Title}" FontSize="20" VerticalAlignment="Center" Foreground="#888" Margin="10,0"/>
+        <Grid Grid.Row="1" Margin="20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="#888" Text="菜单名称" VerticalAlignment="Center"/>
+            <TextBlock Foreground="#888" Text="父节点" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBlock Foreground="#888" Text="菜单节点类型" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBlock Foreground="#888" Text="目标视图" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBlock Foreground="#888" Text="菜单图标" Grid.Row="4" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="1" Height="33" Text="{Binding MenuModel.MenuHeader}" Style="{StaticResource NormalTextBoxStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Height="34" ItemsSource="{Binding ParentNodes}"
+                      DisplayMemberPath="{Binding MenuHeader}"
+                      SelectedValuePath="{Binding MenuId}"
+                      SelectedItem="{Binding CurrentParentMenu}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding MenuHeader}" VerticalAlignment="Center"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
+                <RadioButton Content="集合类型" GroupName="type1"
+                             IsChecked="{Binding MenuModel.MenuType, ConverterParameter=1,Converter={StaticResource Int2BoolConverter}}"/>
+                <RadioButton Content="视图类型" Margin="10,0" GroupName="type2"
+                             IsChecked="{Binding MenuModel.MenuType,ConverterParameter=0,Converter={StaticResource Int2BoolConverter}}"/>
+            </StackPanel>
+            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource NormalTextBoxStyle}" 
+                     Text="{Binding MenuModel.TargetView,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox Grid.Row="4" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Left" Template="{StaticResource ComboBoxEditableTemplate}"
+                      ItemsSource="{Binding Icons}" FontFamily="{StaticResource Iconfont}"
+                      SelectedItem="{Binding MenuModel.MenuIcon}"
+                      Height="65" Width="110">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem"></Style>
+                </ComboBox.Resources>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="10"/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="50" Height="50">
+                            <TextBlock Text="{Binding}" FontFamily="{StaticResource Iconfont}" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                               FontSize="30" Foreground="#888"/>
+                        </Border>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="20,0">
+            <Button Content="确定" Width="100" Height="30" Margin="5,0" 
+                    Style="{StaticResource NormalButtonStyle}"
+                    Background="#FF0ABEFF"
+                    Command="{Binding ConfirmCommand}"/>
+            <Button Content="取消" Width="100" Height="30"
+                    Style="{StaticResource NormalButtonStyle}"
+                    Background="#DDD" Foreground="#666"
+                    Command="{Binding CancelCommand}"/>
+        </StackPanel>
+
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,8 @@
+﻿<Application x:Class="Zhaoxi.SmartParking.Client.Upgrade.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.Upgrade">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

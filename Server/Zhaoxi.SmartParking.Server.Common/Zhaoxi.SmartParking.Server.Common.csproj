@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zhaoxi.SmartParking.Server.EFCore\Zhaoxi.SmartParking.Server.EFCore.csproj" />
+    <ProjectReference Include="..\Zhaoxi.SmartParking.Server.ICommon\Zhaoxi.SmartParking.Server.ICommon.csproj" />
+  </ItemGroup>
+
+</Project>

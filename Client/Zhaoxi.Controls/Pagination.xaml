@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="Zhaoxi.Controls.Pagination"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zhaoxi.Controls"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+             mc:Ignorable="d" Background="{x:Null}"
+             d:DesignHeight="45" d:DesignWidth="800">
+    <UserControl.Resources>
+        <PathGeometry x:Key="movingPath" Figures="M5,0 0 5 5 10"/>
+
+        <x:Array x:Key="counts" Type="{x:Type sys:Int32}">
+            <sys:Int32>10</sys:Int32>
+            <sys:Int32>15</sys:Int32>
+            <sys:Int32>20</sys:Int32>
+            <sys:Int32>30</sys:Int32>
+            <sys:Int32>50</sys:Int32>
+        </x:Array>
+
+
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="50"/>
+        </Style>
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <LinearGradientBrush x:Key="ComboBox.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFECF4FC" Offset="0.0"/>
+            <GradientStop Color="#FFDCECFC" Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <Style TargetType="Button" x:Key="FlipButtonStyle">
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Name="back">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Name="content"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ComboBox.MouseOver.Background}"/>
+                    <Setter Property="BorderBrush" Value="#FF7EB4EA"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#CCC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="templateRoot" SnapsToDevicePixels="true" Background="Transparent" 
+                                BorderThickness="0" CornerRadius="0,10,10,0">
+                            <Border x:Name="splitBorder" Width="25" SnapsToDevicePixels="true" Margin="0" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Transparent">
+                                <Path x:Name="arrow" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"
+                                      Stroke="Gray" StrokeThickness="1"
+                                      Data="M0 0 5 5 10 0"/>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ComboBox.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF7EB4EA"/>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
+            <Border Background="Transparent" CornerRadius="0,10,10,0">
+                <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                        <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                            <Border x:Name="dropDownBorder" BorderBrush="#EEE" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                                <ScrollViewer x:Name="DropDownScrollViewer">
+                                    <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                            <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                        </Canvas>
+                                        <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </Themes:SystemDropShadowChrome>
+                    </Popup>
+                    <ToggleButton x:Name="toggleButton"  BorderThickness="0" Background="Transparent" 
+                              Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                              Style="{StaticResource ComboBoxToggleButton}"/>
+                    <ContentControl x:Name="contentPresenter" Margin="5,0"
+                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                                  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                  IsHitTestVisible="false"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                  VerticalAlignment="Center">
+                        <TextBlock>
+                            <Run Text="{Binding SelectionBoxItem,RelativeSource={RelativeSource AncestorType=ComboBox,Mode=FindAncestor},Mode=OneWay}"/>
+                            <Run Text="条/页"/>
+                        </TextBlock>
+                    </ContentControl>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="shadow" Value="0,5,5,5"/>
+                    <Setter Property="Color" TargetName="shadow" Value="#22000000"/>
+                </Trigger>
+                <Trigger Property="HasItems" Value="false">
+                    <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                </Trigger>
+                <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                    <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="PagesComboBoxStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Padding" Value="6,3,5,3"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
+        </Style>
+
+        <Style TargetType="RadioButton" x:Key="PageButtonStyle">
+            <Setter Property="GroupName" Value="number_button"/>
+            <Setter Property="Margin" Value="1,0"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" Name="root" CornerRadius="5" 
+                                Height="25" Width="25">
+                            <TextBlock Text="{Binding Index}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EEE"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#FF0ABEFF"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border Background="{TemplateBinding Background}">
+                            <TextBlock VerticalAlignment="Center" Margin="5,0">
+                                <Run Text="{Binding Path=.,Mode=OneWay}"/>
+                                <Run Text="条/页"/>
+                            </TextBlock>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#220ABEFF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FF0ABEFF"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Border Background="#F7F9FA" CornerRadius="10">
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource FlipButtonStyle}" Tag="10,0,0,10" 
+                    IsEnabled="{Binding IsCanPrevious}"
+                    Command="{Binding NavCommand}" CommandParameter="{Binding PreviousIndex}">
+                <Viewbox Height="12" Width="12">
+                    <Path Data="{StaticResource movingPath}" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Viewbox>
+            </Button>
+            <ItemsControl Grid.Column="2" Background="Transparent" ItemsSource="{Binding Pages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Style="{StaticResource PageButtonStyle}" 
+                                     Command="{Binding DataContext.NavCommand,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}" 
+                                     CommandParameter="{Binding Index}"
+                                     IsEnabled="{Binding IsEnabled}"
+                                     IsChecked="{Binding IsCurrent}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Grid.Column="4" Style="{StaticResource FlipButtonStyle}" 
+                    IsEnabled="{Binding IsCanNext}" 
+                    Command="{Binding NavCommand}" CommandParameter="{Binding NextIndex}">
+                <Viewbox Height="12" Width="12">
+                    <Path Data="{StaticResource movingPath}" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" RenderTransformOrigin="0.5,0.5">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="180"/>
+                        </Path.RenderTransform>
+                    </Path>
+                </Viewbox>
+            </Button>
+            
+            <ComboBox Grid.Column="5" Width="80" Style="{DynamicResource PagesComboBoxStyle}"
+                      SelectedValue="{Binding CountPerPage}" ItemsSource="{Binding Source={StaticResource counts}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <prism:InvokeCommandAction Command="{Binding CountPerPageChangeCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+        </Grid>
+    </Border>
+</UserControl>

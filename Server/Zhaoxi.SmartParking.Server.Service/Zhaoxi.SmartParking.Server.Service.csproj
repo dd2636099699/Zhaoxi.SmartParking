@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zhaoxi.SmartParking.Server.ICommon\Zhaoxi.SmartParking.Server.ICommon.csproj" />
+    <ProjectReference Include="..\Zhaoxi.SmartParking.Server.IService\Zhaoxi.SmartParking.Server.IService.csproj" />
+    <ProjectReference Include="..\Zhaoxi.SmartParking.Server.Models\Zhaoxi.SmartParking.Server.Models.csproj" />
+  </ItemGroup>
+
+</Project>

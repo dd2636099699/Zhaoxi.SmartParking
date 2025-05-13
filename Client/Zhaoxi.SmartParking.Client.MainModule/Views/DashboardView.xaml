@@ -1,0 +1,445 @@
+﻿<UserControl x:Class="Zhaoxi.SmartParking.Client.MainModule.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:zxc="clr-namespace:Zhaoxi.Controls;assembly=Zhaoxi.Controls"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.MainModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/BaseResources.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/DatePickerStyle.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ScrollViewerStyle.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/DataGridStyle.xaml"/>
+
+                <ResourceDictionary>
+                    <Style TargetType="{x:Type RadioButton}" x:Key="TopTabButtonStyle">
+                        <Setter Property="Height" Value="35"/>
+                        <Setter Property="Foreground" Value="#555"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type RadioButton}">
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter VerticalAlignment="Center" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <ControlTemplate TargetType="CheckBox" x:Key="LastMonthButtonTemplate">
+                        <Border Background="#f8f8f8" CornerRadius="8" Name="back">
+                            <TextBlock Text="{Binding Content,RelativeSource={RelativeSource AncestorType=CheckBox ,Mode=FindAncestor}}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Margin="10,4" Name="txt"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#FFF05005" TargetName="back"/>
+                                <Setter Property="TextBlock.Foreground" Value="White" TargetName="txt"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                    <Style TargetType="Button" x:Key="CreateNewButtonStyle">
+                        <Setter Property="Background" Value="#FFF05005"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#CCF05005"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid Margin="20,30" x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="370"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="0"/>
+            </Grid.RowDefinitions>
+            <!--第一行-->
+            <!--=================================================================================================-->
+            <Border Width="260" HorizontalAlignment="Left" BorderBrush="#EEE" BorderThickness="0,0,0,1">
+                <UniformGrid Rows="1">
+                    <RadioButton Content="Today" Style="{StaticResource TopTabButtonStyle}" IsChecked="True"
+                             HorizontalContentAlignment="Left"/>
+                    <RadioButton Content="This Week" Style="{StaticResource TopTabButtonStyle}"/>
+                    <RadioButton Content="This Month" Style="{StaticResource TopTabButtonStyle}"
+                             HorizontalContentAlignment="Right"/>
+                </UniformGrid>
+            </Border>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                <ComboBox Width="130" Height="30" IsEditable="False" ItemsSource="{Binding AraeList}"
+                      SelectedIndex="0" SelectedItem="{Binding CurrentArea}" Margin="20,0" DisplayMemberPath="AreaName">
+                </ComboBox>
+                <DatePicker Width="130" Height="30" BorderThickness="0" SelectedDate="{Binding CurrentDate}"/>
+            </StackPanel>
+
+            <!--第二行-->
+            <ItemsControl Grid.Row="1" Margin="-10,20,-10,0" ItemsSource="{Binding BoardList}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="5" Background="White" Margin="10" VerticalAlignment="Center">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                            </Border.Effect>
+                            <StackPanel VerticalAlignment="Center" Margin="10,0">
+                                <TextBlock Text="{Binding Header}" Foreground="#AAA" Margin="0,15"/>
+                                <TextBlock FontSize="22" FontWeight="Normal" Foreground="#444">
+                        <Run Text="&#xe68f;" FontFamily="{StaticResource Iconfont}"/>
+                        <Run Text="2,00,000"/>
+                                </TextBlock>
+                                <Grid Margin="0,10">
+                                    <TextBlock HorizontalAlignment="Left" Foreground="Green">
+                            <Run Text="&#xe62a;" FontFamily="{StaticResource Iconfont}"/>
+                            <Run Text="+5%"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Details" HorizontalAlignment="Right" Foreground="#888"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--第三行-->
+            <Grid Grid.Row="2" Margin="-10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <!--第一列-->
+                <Border CornerRadius="5" Background="White" Margin="10" VerticalAlignment="Center">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--列头-->
+                        <Border BorderBrush="#EFEFEF" BorderThickness="0,0,0,1"/>
+                        <TextBlock Text="Best Sellers" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="15,0" Effect="{x:Null}"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                            <CheckBox Content="Last Month" Template="{StaticResource LastMonthButtonTemplate}" FontSize="8" Foreground="#888"/>
+                            <TextBlock Text="&#xec86;" FontFamily="{StaticResource Iconfont}" Margin="15,0"/>
+                        </StackPanel>
+                        <!--子项-->
+                        <ScrollViewer Grid.Row="1" Background="Transparent">
+                            <StackPanel Margin="15,0">
+                                <Border BorderBrush="#EFEFEF" BorderThickness="0,0,0,1">
+                                    <Grid Margin="0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="130" Height="75" CornerRadius="5">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="/Zhaoxi.SmartParking.Client.Assets;component/Images/covers/1.png"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0">
+                                            <TextBlock Text="Cheeseburger" Foreground="#444" FontWeight="Normal"/>
+                                            <TextBlock Text="Quis autem velenum iure reprehenderit qui in eat" Foreground="#AAA" Margin="0,10" FontSize="10"/>
+                                            <TextBlock FontSize="10">
+                                        <Run Text="Restaunrant:" Foreground="#AAA"/>
+                                        <Run Text="Eatsome" FontWeight="Normal" Foreground="#444"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border BorderBrush="#EFEFEF" BorderThickness="0,0,0,1">
+                                    <Grid Margin="0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="130" Height="75" CornerRadius="5">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="/Zhaoxi.SmartParking.Client.Assets;component/Images/covers/2.png"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0">
+                                            <TextBlock Text="Cheeseburger" Foreground="#444" FontWeight="Normal"/>
+                                            <TextBlock Text="Quis autem velenum iure reprehenderit qui in eat" Foreground="#AAA" Margin="0,10" FontSize="10"/>
+                                            <TextBlock FontSize="10">
+                                        <Run Text="Restaunrant:" Foreground="#AAA"/>
+                                        <Run Text="Eatsome" FontWeight="Normal" Foreground="#444"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border BorderBrush="#EFEFEF" BorderThickness="0,0,0,1">
+                                    <Grid Margin="0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="130" Height="75" CornerRadius="5">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="/Zhaoxi.SmartParking.Client.Assets;component/Images/covers/3.png"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0">
+                                            <TextBlock Text="Cheeseburger" Foreground="#444" FontWeight="Normal"/>
+                                            <TextBlock Text="Quis autem velenum iure reprehenderit qui in eat" Foreground="#AAA" Margin="0,10" FontSize="10"/>
+                                            <TextBlock FontSize="10">
+                                        <Run Text="Restaunrant:" Foreground="#AAA"/>
+                                        <Run Text="Eatsome" FontWeight="Normal" Foreground="#444"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border BorderBrush="#EFEFEF" BorderThickness="0,0,0,1">
+                                    <Grid Margin="0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="130" Height="75" CornerRadius="5">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="/Zhaoxi.SmartParking.Client.Assets;component/Images/covers/1.png"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0">
+                                            <TextBlock Text="Cheeseburger" Foreground="#444" FontWeight="Normal"/>
+                                            <TextBlock Text="Quis autem velenum iure reprehenderit qui in eat" Foreground="#AAA" Margin="0,10" FontSize="10"/>
+                                            <TextBlock FontSize="10">
+                                        <Run Text="Restaunrant:" Foreground="#AAA"/>
+                                        <Run Text="Eatsome" FontWeight="Normal" Foreground="#444"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!--第二列-->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border CornerRadius="5" Background="White" Margin="10">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                        </Border.Effect>
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Sales stats" VerticalAlignment="Center" Foreground="#444"/>
+                            <TextBlock Text="&#xec86;" FontFamily="{StaticResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                            <lvc:PieChart  Grid.Row="1" Name="pie1" LegendLocation="Right" InnerRadius="35" Margin="5" HoverPushOut="1" 
+                                       DataTooltip="{x:Null}" Series="{Binding Series}">
+                                <lvc:PieChart.ChartLegend>
+                                    <lvc:DefaultLegend BulletSize="10" FontSize="10" Margin="0,5" Width="200" MinWidth="200"/>
+                                </lvc:PieChart.ChartLegend>
+                            </lvc:PieChart>
+                        </Grid>
+
+                    </Border>
+                    <UniformGrid Grid.Row="1" Rows="1">
+                        <Border Background="White" Margin="10,10,5,10" CornerRadius="5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                            </Border.Effect>
+                            <Grid Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="28"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Sales Per Day" VerticalAlignment="Center" Foreground="#444"/>
+                                <TextBlock Text="&#xec86;" FontFamily="{StaticResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                                <UniformGrid Grid.Row="1" Rows="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="Orange" Height="20" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="Orange" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="#FF05C882" Height="40" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="#FF05C882" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="#FF05C882" Height="60" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="#FF05C882" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="Orange" Height="30" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="Orange" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="#FF05C882" Height="50" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="#FF05C882" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="#FF05C882" Height="20" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="#FF05C882" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="12"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Width="8" CornerRadius="4" Background="#FF05C882" Height="10" VerticalAlignment="Bottom"/>
+                                        <Border Width="6" Height="6" CornerRadius="3" Background="#FF05C882" Grid.Row="1"/>
+                                    </Grid>
+                                </UniformGrid>
+                                <TextBlock Text="See more info" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                            </Grid>
+                        </Border>
+
+                        <Border Background="White" Margin="5,10,10,10" CornerRadius="5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                            </Border.Effect>
+                            <Grid Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="28"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Delivery Limit" VerticalAlignment="Center" Foreground="#444"/>
+                                <TextBlock Text="&#xec86;" FontFamily="{StaticResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                                <zxc:CircularProgressBar Grid.Row="1" Value="60" ForeColor="#FF1E8CFA" BackColor="#EfEfEF" Margin="20"/>
+                                <TextBlock Text="See more info" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                            </Grid>
+                        </Border>
+
+                    </UniformGrid>
+                </Grid>
+            </Grid>
+
+            <!--第四行-->
+            <Border Grid.Row="3" Background="White" CornerRadius="5" Margin="0,10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Direction="0" Color="#555" Opacity="0.1"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Order Management" VerticalAlignment="Center" Margin="20,0" FontSize="16"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <StackPanel Margin="20,0">
+                            <TextBlock Text="Search number and type" Foreground="#888"/>
+                            <TextBox Height="30" Width="300" Margin="0,5"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Date and Time" Foreground="#888"/>
+                            <DatePicker Width="150" Height="30" Margin="0,5" BorderBrush="#eee"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Content="Create New" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="40,0"
+                        Height="30" Width="120" Style="{StaticResource CreateNewButtonStyle}"
+                        Foreground="White" FontSize="14"/>
+
+                    <DataGrid Grid.Row="2" ItemsSource="{Binding InfoList}" Margin="20,0,20,10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order Number" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Order Type" Width="*" Binding="{Binding Age}"/>
+                            <DataGridTextColumn Header="Order Date" Width="*" Binding="{Binding Value}"/>
+                            <DataGridTextColumn Header="Delivery Fee" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Order Price" Width="*" Binding="{Binding Age}"/>
+                            <DataGridTextColumn Header="Status" Width="*" Binding="{Binding Value}"/>
+                            <DataGridTemplateColumn Header="Test">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Age}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Actions" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock>
+                                    <Hyperlink Command="{Binding MenuItemCommand}" CommandParameter="{Binding}">编辑</Hyperlink>
+                                            </TextBlock>
+                                            <TextBlock Margin="5,0">
+                                    <Hyperlink Command="{Binding MenuItemCommand}" CommandParameter="{Binding}">删除</Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

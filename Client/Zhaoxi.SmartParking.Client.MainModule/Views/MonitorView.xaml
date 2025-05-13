@@ -1,0 +1,148 @@
+﻿<UserControl x:Class="Zhaoxi.SmartParking.Client.MainModule.Views.MonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.MainModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/BaseResources.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ButtonStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="400"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#F7F9FA" />
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+            <TextBlock Text="车道名称：" Foreground="#888" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding RoadName}" FontSize="20"/>
+        </StackPanel>
+        <!--设备状态-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" TextBlock.FontSize="14" Margin="10,0">
+            <TextBlock Text="设备状态：" VerticalAlignment="Center" Foreground="#888"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+                <TextBlock Text="地磁1" Foreground="#888"/>
+                <TextBlock Text="连接正常" Margin="5,0" Foreground="Green"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="5,0">
+                <TextBlock Text="抓拍相机" Foreground="#888"/>
+                <TextBlock Text="连接正常" Margin="5,0" Foreground="Green"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="5,0">
+                <TextBlock Text="道闸" Foreground="#888"/>
+                <TextBlock Text="连接正常" Margin="5,0" Foreground="Green"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Margin="5,0">
+                <TextBlock Text="地磁2" Foreground="#888"/>
+                <TextBlock Text="连接正常" Margin="5,0" Foreground="Green"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--抓拍信息-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="#DDD" BorderThickness="2" CornerRadius="10" Margin="15">
+                <Border.Background>
+                    <ImageBrush ImageSource="../sue.jpg" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="车牌号：" FontSize="30"/>
+                    <TextBlock Text="苏E05EV8" FontSize="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
+                    <TextBlock Text="车辆类型：" />
+                    <TextBlock Text="临时车" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
+                    <TextBlock Text="进入时间：" />
+                    <TextBlock Text="2021-03-06 20:00" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="3">
+                    <TextBlock Text="离开时间：" />
+                    <TextBlock Text="2021-03-06 20:00" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="4">
+                    <TextBlock Text="费用合计：" FontSize="20"/>
+                    <TextBlock Text="0.00元" VerticalAlignment="Center" FontSize="20"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Grid.Row="5" Height="33">
+                    <CheckBox Content="手动控制" VerticalContentAlignment="Center"/>
+                    <Button Content="开闸" Margin="10,0" Padding="10,5" Style="{StaticResource NormalButtonStyle}"/>
+                    <Button Content="关闸" Padding="10,5" Style="{StaticResource NormalButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!--出入记录-->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="#F7F9FA"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="时间" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Text="车牌号" VerticalAlignment="Center" Grid.Column="1"/>
+                <TextBlock Text="费用" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2"/>
+                <TextBlock Text="放行类型" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3"/>
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Files}" Grid.Row="1">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="35" Name="root" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Index}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" Grid.Column="1"/>
+                            <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" />
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3">
+                                <Hyperlink Command="{Binding DeleteCommand}"
+                                           CommandParameter="{Binding}">删除</Hyperlink>
+                            </TextBlock>
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F7F9FA" TargetName="root"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</UserControl>

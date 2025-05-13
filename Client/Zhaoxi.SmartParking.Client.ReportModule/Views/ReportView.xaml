@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Zhaoxi.SmartParking.Client.ReportModule.Views.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.ReportModule.Views"
+             xmlns:prims="http://prismlibrary.com/"
+             prims:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/BaseResources.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/TextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Zhaoxi.SmartParking.Client.Assets;component/Styles/DefaultToolBarTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Template>
+        <StaticResource ResourceKey="ToolBarTemplate"/>
+    </UserControl.Template>
+    <Grid>
+        <DataGrid ItemsSource="{Binding DataList}" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="车牌号" Binding="{Binding AutoLicense}"/>
+              <!--  <DataGridTextColumn Header="车牌颜色" Binding="{Binding AutoLicese}"/>
+                <DataGridTextColumn Header="车身颜色" Binding="{Binding AutoLicese}"/>
+                <DataGridTextColumn Header="登记类型" Binding="{Binding AutoLicese}"/> -->
+                <DataGridTextColumn Header="入场时间" Binding="{Binding EnterTime}"/>
+                <DataGridTextColumn Header="出场时间" Binding="{Binding LeaveTime}"/>
+                <DataGridTextColumn Header="总费用" Binding="{Binding Cost}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

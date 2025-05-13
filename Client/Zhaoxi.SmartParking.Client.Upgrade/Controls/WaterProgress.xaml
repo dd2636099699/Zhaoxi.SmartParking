@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="Zhaoxi.SmartParking.Client.Upgrade.Controls.WaterProgress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zhaoxi.SmartParking.Client.Upgrade.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="sb">
+            <!--外圈旋转-->
+            <DoubleAnimation Duration="0:0:2" From="0" To="360" Storyboard.TargetName="rt1" Storyboard.TargetProperty="Angle"
+                             RepeatBehavior="Forever"/>
+            <DoubleAnimation Duration="0:0:2.5" From="90" To="450" Storyboard.TargetName="rt2" Storyboard.TargetProperty="Angle"
+                             RepeatBehavior="Forever"/>
+            <DoubleAnimation Duration="0:0:3" From="180" To="540" Storyboard.TargetName="rt3" Storyboard.TargetProperty="Angle"
+                             RepeatBehavior="Forever"/>
+            <DoubleAnimation Duration="0:0:3.5" From="270" To="630" Storyboard.TargetName="rt4" Storyboard.TargetProperty="Angle"
+                             RepeatBehavior="Forever"/>
+            <!--波浪模拟位移-->
+            <DoubleAnimation Duration="0:0:1.3" From="0" To="-166" Storyboard.TargetName="tt1" Storyboard.TargetProperty="X"
+                             RepeatBehavior="Forever"/>
+            <DoubleAnimation Duration="0:0:2.7" From="0" To="-166" Storyboard.TargetName="tt2" Storyboard.TargetProperty="X"
+                             RepeatBehavior="Forever"/>
+            <DoubleAnimation Duration="0:0:1.9" From="-166" To="0" Storyboard.TargetName="tt3" Storyboard.TargetProperty="X"
+                             RepeatBehavior="Forever"/>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="UserControl.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource sb }"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Viewbox>
+        <Grid Width="200" Height="200">
+            <!--外圈-->
+            <Path Data="M10.077735,47.685855 C31.078032,13.685855 25.578212,18.186285 60.078032,7.6858546 98.105732,-2.7958154 121.12748,-1.2938974 136.07773,4.6862026 151.02798,10.666293 171.52126,13.34086 186.07803,42.686 193.52198,65.84058 189.06226,75.02501 189.07803,107.686 185.62079,132.09885 181.48699,134.68936 171.078,146.686 144.0497,177.83681 162.57824,158.68624 139.078,178.686 102.41447,209.88832 87.194615,208.93377 69.194405,206.9341 51.194195,204.93442 38.008452,202.54643&#xD;&#xA;17.078032,160.686 -3.8523784,118.82557 0.57719474,123.68578 0.077734746,97.685855 -0.54939526,65.040225 10.077735,47.685855 10.077735,47.685855 z" VerticalAlignment="Center" HorizontalAlignment="Center"
+              RenderTransformOrigin="0.5,0.5" Height="207.771"
+              Width="190.388" Opacity="0.3">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7756F7A7" Offset="0"/>
+                        <GradientStop Color="#5AB5FFDA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="0" x:Name="rt1"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="M10.077735,47.685855 C31.078032,13.685855 25.578212,18.186285 60.078032,7.6858546 98.105732,-2.7958154 121.12748,-1.2938974 136.07773,4.6862026 151.02798,10.666293 171.52126,13.34086 186.07803,42.686 193.52198,65.84058 189.06226,75.02501 189.07803,107.686 185.62079,132.09885 181.48699,134.68936 171.078,146.686 144.0497,177.83681 162.57824,158.68624 139.078,178.686 102.41447,209.88832 87.194615,208.93377 69.194405,206.9341 51.194195,204.93442 38.008452,202.54643&#xD;&#xA;17.078032,160.686 -3.8523784,118.82557 0.57719474,123.68578 0.077734746,97.685855 -0.54939526,65.040225 10.077735,47.685855 10.077735,47.685855 z" VerticalAlignment="Center" HorizontalAlignment="Center"
+              RenderTransformOrigin="0.5,0.5" Height="207.771"
+              Width="190.388" Opacity="0.6">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7756F7A7" Offset="0"/>
+                        <GradientStop Color="#5AB5FFDA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90" x:Name="rt2"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="M10.077735,47.685855 C31.078032,13.685855 25.578212,18.186285 60.078032,7.6858546 98.105732,-2.7958154 121.12748,-1.2938974 136.07773,4.6862026 151.02798,10.666293 171.52126,13.34086 186.07803,42.686 193.52198,65.84058 189.06226,75.02501 189.07803,107.686 185.62079,132.09885 181.48699,134.68936 171.078,146.686 144.0497,177.83681 162.57824,158.68624 139.078,178.686 102.41447,209.88832 87.194615,208.93377 69.194405,206.9341 51.194195,204.93442 38.008452,202.54643&#xD;&#xA;17.078032,160.686 -3.8523784,118.82557 0.57719474,123.68578 0.077734746,97.685855 -0.54939526,65.040225 10.077735,47.685855 10.077735,47.685855 z" VerticalAlignment="Center" HorizontalAlignment="Center"
+              RenderTransformOrigin="0.5,0.5" Height="207.771"
+              Width="190.388" Opacity="0.8">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7756F7A7" Offset="0"/>
+                        <GradientStop Color="#5AB5FFDA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180" x:Name="rt3"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path Data="M10.077735,47.685855 C31.078032,13.685855 25.578212,18.186285 60.078032,7.6858546 98.105732,-2.7958154 121.12748,-1.2938974 136.07773,4.6862026 151.02798,10.666293 171.52126,13.34086 186.07803,42.686 193.52198,65.84058 189.06226,75.02501 189.07803,107.686 185.62079,132.09885 181.48699,134.68936 171.078,146.686 144.0497,177.83681 162.57824,158.68624 139.078,178.686 102.41447,209.88832 87.194615,208.93377 69.194405,206.9341 51.194195,204.93442 38.008452,202.54643&#xD;&#xA;17.078032,160.686 -3.8523784,118.82557 0.57719474,123.68578 0.077734746,97.685855 -0.54939526,65.040225 10.077735,47.685855 10.077735,47.685855 z" VerticalAlignment="Center" HorizontalAlignment="Center"
+              RenderTransformOrigin="0.5,0.5" Height="207.771"
+              Width="190.388">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7756F7A7" Offset="0"/>
+                        <GradientStop Color="#5AB5FFDA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="270" x:Name="rt4"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+
+            <!--内圈-->
+            <Border Width="175" Height="175" CornerRadius="90" BorderThickness="5" BorderBrush="#FF3FD389">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#B6FFFFFF" Offset="1"/>
+                        <GradientStop Color="White"/>
+                        <GradientStop Color="White" Offset="0.672"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!--波浪-->
+            <Border Width="166" Height="166" CornerRadius="90">
+                <Border.Clip>
+                    <EllipseGeometry RadiusX="83" RadiusY="83" Center="83,83"/>
+                </Border.Clip>
+                <Canvas>
+                    <Grid>
+                        <Grid.RenderTransform>
+                            <TranslateTransform Y="160" x:Name="ttg"/>
+                        </Grid.RenderTransform>
+                        <Path Data="M0 5A80 40 0 0 1 83 5A80 40 0 0 0 166 5A80 40 0 0 1 249 5A80 40 0 0 0 332 5L332 182 0 182Z" 
+                  Fill="#4CFFA500">
+                            <Path.RenderTransform>
+                                <TranslateTransform x:Name="tt1"/>
+                            </Path.RenderTransform>
+                        </Path>
+                        <Path Data="M0 5A80 40 0 0 1 83 5A80 40 0 0 0 166 5A80 40 0 0 1 249 5A80 40 0 0 0 332 5L332 182 0 182Z" 
+                  Fill="#7FFFA500">
+                            <Path.RenderTransform>
+                                <TranslateTransform x:Name="tt2"/>
+                            </Path.RenderTransform>
+                        </Path>
+                        <Path Data="M0 5A80 40 0 0 1 83 5A80 40 0 0 0 166 5A80 40 0 0 1 249 5A80 40 0 0 0 332 5L332 182 0 182Z" 
+                  Fill="#CC51FF00">
+                            <Path.RenderTransform>
+                                <TranslateTransform X="-166" x:Name="tt3"/>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                </Canvas>
+            </Border>
+
+            <Border Width="175" Height="175" CornerRadius="90" BorderThickness="5" BorderBrush="#FF3FD389">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#B6FFFFFF" Offset="1"/>
+                        <GradientStop Color="#E2FFFFFF"/>
+                        <GradientStop Color="#D3FFFFFF" Offset="0.528"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!--文字-->
+            <Viewbox Width="160" Height="95">
+                <TextBlock FontSize="50" FontWeight="ExtraLight" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Foreground="#888" FontFamily="Microsoft YaHei"><Run Text="{Binding Value,RelativeSource={RelativeSource AncestorType=UserControl,Mode=FindAncestor}}"/><Run FontSize="18" Text="%"/></TextBlock>
+            </Viewbox>
+        </Grid>
+    </Viewbox>
+</UserControl>
