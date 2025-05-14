@@ -30,12 +30,12 @@ namespace Zhaoxi.SmartParking.Client.MainModule
 
 
             var clientType = _settingsBLL.GetClientType();
-            if (clientType == 2)
+            if (clientType == 1)
             {
                 // 如果客户端管理中心类型的话  打开以下界面
                 regionManager.RegisterViewWithRegion("MainContentRegion", typeof(DashboardView));
             }
-            else if (clientType == 1)
+            else if (clientType == 2)
             {
                 //否则打开监控页面
 
