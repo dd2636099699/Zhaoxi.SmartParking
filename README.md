@@ -9,3 +9,8 @@
 参与客户端界面的设计和开发，使用 WPF 和 Prism 框架实现了多个模块的视图和视图模型，提高了用户体验和代码的可维护性。
 负责服务器端 API 服务的开发，使用 ASP.NET Core 和 Entity Framework Core 实现了数据的增删改查操作，保证了系统的稳定性和性能。
 参与模拟部分的开发，使用 Socket 通信和 Speech Synthesis 技术模拟了设备之间的数据交互和语音提示，增强了系统的测试和调试能力。
+![image](https://github.com/user-attachments/assets/fa2cf589-73bc-48c0-a844-bc89ee6b187c)
+![image](https://github.com/user-attachments/assets/c2513a58-46a3-43b6-b1e1-7cb622008dad)
+![Uploading image.png…]()
+
+
